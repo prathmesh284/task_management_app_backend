@@ -1,11 +1,11 @@
-import psycopg2
-from psycopg2.extras import RealDictCursor
+import psycopg
+from psycopg.rows import dict_row
 from app.core.config import DATABASE_URL
 
 def get_db():
-    conn = psycopg2.connect(
+    conn = psycopg.connect(
         DATABASE_URL,
-        cursor_factory=RealDictCursor
+        row_factory=dict_row
     )
     try:
         yield conn
