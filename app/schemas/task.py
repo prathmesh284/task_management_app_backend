@@ -6,7 +6,7 @@ from typing import Optional
 
 class TaskCreateSchema(BaseModel):
     title: str
-    description: Optional[str]
+    description: Optional[str] = None
     assigned_to: int
     due_date: date
 
@@ -23,7 +23,7 @@ class TaskUpdateSchema(BaseModel):
 class TaskResponseSchema(BaseModel):
     id: int
     title: str
-    description: Optional[str]
+    description: Optional[str] = None
     status: str
-    due_date: Optional[date]
+    due_date: Optional[date] = None
     assigned_to: int
