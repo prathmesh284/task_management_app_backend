@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import date
-from typing import Optional
+from typing import Optional, Literal
 
 # -------- Requests --------
 
@@ -27,3 +27,6 @@ class TaskResponseSchema(BaseModel):
     status: str
     due_date: Optional[date] = None
     assigned_to: int
+
+class TaskStatusUpdateSchema(BaseModel):
+    status: Literal["In Progress", "Completed"]

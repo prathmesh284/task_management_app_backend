@@ -14,3 +14,15 @@ def get_all_tasks(db):
     cur = db.cursor()
     cur.execute(q.GET_ALL_TASKS)
     return cur.fetchall()
+
+def get_task_by_id(db, task_id: int):
+    cur = db.cursor()
+    cur.execute(q.GET_TASK_BY_ID, (task_id,))
+    return cur.fetchone()
+
+def update_task_status(db, task_id: int, status: str):
+    cur = db.cursor()
+    cur.execute(q.UPDATE_TASK_STATUS, (status, task_id))
+    task = cur.fetchone()
+    db.commit()
+    return task

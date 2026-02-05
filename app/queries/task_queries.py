@@ -10,3 +10,16 @@ SELECT * FROM tasks WHERE assigned_to = %s
 GET_ALL_TASKS = """
 SELECT * FROM tasks
 """
+
+UPDATE_TASK_STATUS = """
+UPDATE tasks
+SET status = %s
+WHERE id = %s
+RETURNING id, title, description, status, due_date, assigned_to;
+"""
+
+GET_TASK_BY_ID = """
+SELECT id, status, assigned_to
+FROM tasks
+WHERE id = %s;
+"""

@@ -9,3 +9,11 @@ def my_tasks(db, current_user):
 
 def all_tasks(db):
     return task_service.get_all_tasks(db) 
+
+def update_task_status(db, task_id, payload, current_user):
+    return task_service.update_task_status(
+        db=db,
+        task_id=task_id,
+        new_status=payload.status,
+        current_user=current_user
+    )
