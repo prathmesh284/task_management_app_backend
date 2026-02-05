@@ -19,3 +19,13 @@ def get_user_by_id(db, user_id):
     cur = db.cursor()
     cur.execute(q.GET_USER_BY_ID, (user_id,))
     return cur.fetchone()
+
+def get_all_users(db):
+    cur = db.cursor()
+    cur.execute(q.GET_ALL_USERS)
+    return cur.fetchall()
+
+def get_employee_count(db):
+    cur = db.cursor()
+    cur.execute(q.GET_EMPLOYEE_COUNT)
+    return cur.fetchone()
