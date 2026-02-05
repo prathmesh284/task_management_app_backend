@@ -15,3 +15,6 @@ def create_task(db, task, current_user):
 
 def get_my_tasks(db, user):
     return task_dao.get_tasks_by_user(db, user["id"])
+
+def get_all_tasks(db):
+    return task_dao.get_all_tasks(db)

@@ -6,3 +6,6 @@ def create_task(db, task, current_user):
 
 def my_tasks(db, current_user):
     return task_service.get_my_tasks(db, current_user)
+
+def all_tasks(db):
+    return task_service.get_all_tasks(db) 
