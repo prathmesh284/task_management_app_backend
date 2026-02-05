@@ -11,6 +11,11 @@ def create(task: TaskCreateSchema, db=Depends(get_db), user=Depends(get_current_
     created_task = task_controller.create_task(db, task, user)
     return TaskResponseSchema(**created_task)
 
+@router.get("/")
+def get_all_tasks(db=Depends(get_db)):
+    tasks = task_controller.all_tasks(db);
+    return [TaskResponseSchema(**t) for t in tasks]
+
 @router.get("/my")
 def my_tasks(db=Depends(get_db), user=Depends(get_current_user)):
     tasks = task_controller.my_tasks(db, user)
