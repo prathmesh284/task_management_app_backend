@@ -1,3 +1,4 @@
+import math
 from fastapi import HTTPException
 from app.dao import task_dao
 
@@ -46,3 +47,47 @@ def update_task_status(db, task_id: int, new_status: str, current_user):
         )
 
     return task_dao.update_task_status(db, task_id, new_status)
+
+
+def get_tasks_paginated(db, status, page, limit, current_user):
+    if current_user["role"] != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin access required"
+        )
+
+    page = max(page, 1)
+    limit = max(limit, 1)
+    offset = (page - 1) * limit
+
+    total = task_dao.count_tasks(db, status)
+    pages = max(math.ceil(total / limit), 1)
+
+    items = task_dao.get_tasks_paginated(
+        db=db,
+        status=status,
+        limit=limit,
+        offset=offset
+    )
+
+    return {
+        "items": items,
+        "total": total,
+        "page": page,
+        "pages": pages
+    }
+
+def get_upcoming_tasks(db, days: int, current_user):
+    if current_user["role"] != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin access required"
+        )
+
+    # Hard safety limits
+    days = min(max(days, 1), 30)
+
+    return task_dao.get_upcoming_tasks(db, days)
+
+def get_count(db):
+    return task_dao.get_count(db)

@@ -26,3 +26,29 @@ def update_task_status(db, task_id: int, status: str):
     task = cur.fetchone()
     db.commit()
     return task
+
+def get_tasks_paginated(db, status, limit, offset):
+    cur = db.cursor()
+    cur.execute(
+        q.GET_TASKS_PAGINATED,
+        (status, status, limit, offset)
+    )
+    return cur.fetchall()
+
+def count_tasks(db, status):
+    cur = db.cursor()
+    cur.execute(
+        q.COUNT_TASKS,
+        (status, status)
+    )
+    return cur.fetchone()["count"]
+
+def get_upcoming_tasks(db, days: int):
+    cur = db.cursor()
+    cur.execute(q.GET_UPCOMING_TASKS, (days,))
+    return cur.fetchall()
+
+def get_count(db):
+    cur = db.cursor()
+    cur.execute(q.COUNT_ALL_TASKS)
+    return cur.fetchall()

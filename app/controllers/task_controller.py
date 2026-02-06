@@ -17,3 +17,22 @@ def update_task_status(db, task_id, payload, current_user):
         new_status=payload.status,
         current_user=current_user
     )
+
+def get_tasks_paginated(db, status, page, limit, current_user):
+    return task_service.get_tasks_paginated(
+        db=db,
+        status=status,
+        page=page,
+        limit=limit,
+        current_user=current_user
+    )
+
+def get_upcoming_tasks(db, days, current_user):
+    return task_service.get_upcoming_tasks(
+        db=db,
+        days=days,
+        current_user=current_user
+    )
+
+def get_count_of_all_tasks(db):
+    return task_service.get_count(db)
