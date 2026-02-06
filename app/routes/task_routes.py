@@ -6,10 +6,9 @@ from app.controllers import task_controller
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
-@router.post("/")
+@router.post("/", response_model=TaskResponseSchema)
 def create(task: TaskCreateSchema, db=Depends(get_db), user=Depends(get_current_user)):
-    created_task = task_controller.create_task(db, task, user)
-    return TaskResponseSchema(**created_task)
+    return task_controller.create_task(db, task, user)
 
 # api for test
 @router.get("/all")

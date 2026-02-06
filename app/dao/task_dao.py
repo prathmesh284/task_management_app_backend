@@ -1,9 +1,19 @@
 from app.queries import task_queries as q
 
-def create_task(db, title, description, assigned_to, due_date):
+def create_task(db, task):
     cur = db.cursor()
-    cur.execute(q.CREATE_TASK, (title, description, assigned_to, due_date))
+    cur.execute(
+        q.CREATE_TASK,
+        (
+            task.title,
+            task.description,
+            task.assigned_to,
+            task.due_date,
+        ),
+    )
+    new_task = cur.fetchone()
     db.commit()
+    return new_task
 
 def get_tasks_by_user(db, user_id):
     cur = db.cursor()

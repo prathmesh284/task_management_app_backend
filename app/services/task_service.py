@@ -5,14 +5,9 @@ from app.dao import task_dao
 def create_task(db, task, current_user):
     if current_user["role"] != "admin":
         raise HTTPException(status_code=403, detail="Admin access required")
-
-    task_dao.create_task(
-        db,
-        task.title,
-        task.description,
-        task.assigned_to,
-        task.due_date
-    )
+    
+    # admin check, validation, etc.
+    return task_dao.create_task(db, task)
 
 def get_my_tasks(db, user):
     return task_dao.get_tasks_by_user(db, user["id"])

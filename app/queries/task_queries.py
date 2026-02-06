@@ -1,6 +1,7 @@
 CREATE_TASK = """
-INSERT INTO tasks (title, description, assigned_to, due_date)
-VALUES (%s, %s, %s, %s)
+INSERT INTO tasks (title, description, assigned_to, due_date, status)
+VALUES (%s, %s, %s, %s, 'Pending')
+RETURNING id, title, status, assigned_to;
 """
 
 GET_TASKS_BY_USER = """
