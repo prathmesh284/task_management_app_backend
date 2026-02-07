@@ -33,6 +33,7 @@ SELECT
     t.status,
     t.due_date,
     t.assigned_to,
+    t.created_at,
     u.name AS assigned_user_name
 FROM tasks t
 JOIN users u ON u.id = t.assigned_to
@@ -60,6 +61,7 @@ SELECT
     t.status,
     t.due_date,
     t.assigned_to,
+    t.created_at,
     u.name AS assigned_user_name
 FROM tasks t
 JOIN users u ON u.id = t.assigned_to
@@ -68,4 +70,19 @@ WHERE
     AND t.due_date >= CURRENT_DATE
     AND t.due_date <= CURRENT_DATE + (%s || ' days')::INTERVAL
 ORDER BY t.due_date ASC;
+"""
+
+UPDATE_TASK = """
+UPDATE tasks
+SET title = %s,
+    description = %s,
+    assigned_to = %s,
+    due_date = %s
+WHERE id = %s
+RETURNING id, title, status, assigned_to;
+"""
+
+DELETE_TASK = """
+DELETE FROM tasks
+WHERE id = %s;
 """

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, validator
-from datetime import date
+from datetime import date, datetime
 from typing import Optional, Literal
 import re
 
@@ -33,11 +33,10 @@ class TaskCreateSchema(BaseModel):
 
 
 class TaskUpdateSchema(BaseModel):
-    title: Optional[str] = None
+    title: str
     description: Optional[str] = None
-    status: Optional[str] = None
-    due_date: Optional[date] = None
-
+    assigned_to: int
+    due_date: date
 
 # -------- Responses --------
 
@@ -48,6 +47,7 @@ class TaskResponseSchema(BaseModel):
     status: str
     due_date: Optional[date] = None
     assigned_to: int
+    created_at: datetime
 
 class TaskStatusUpdateSchema(BaseModel):
     status: Literal["In Progress", "Completed"]

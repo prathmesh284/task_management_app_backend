@@ -86,3 +86,14 @@ def get_upcoming_tasks(db, days: int, current_user):
 
 def get_count(db):
     return task_dao.get_count(db)
+
+def update_task(db, task_id, task, user):
+    if user["role"] != "admin":
+        raise HTTPException(403, "Admin access required")
+    return task_dao.update_task(db, task_id, task)
+
+
+def delete_task(db, task_id, user):
+    if user["role"] != "admin":
+        raise HTTPException(403, "Admin access required")
+    task_dao.delete_task(db, task_id)

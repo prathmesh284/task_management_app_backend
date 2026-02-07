@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query
 from app.database import get_db
 from app.dependencies import get_current_user
-from app.schemas.task import TaskCreateSchema, TaskResponseSchema, TaskStatusUpdateSchema
+from app.schemas.task import TaskCreateSchema, TaskResponseSchema, TaskStatusUpdateSchema, TaskUpdateSchema
 from app.controllers import task_controller
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
@@ -52,3 +52,20 @@ def get_upcoming_tasks(
 @router.get("/count")
 def get_count(db=Depends(get_db)):
     return task_controller.get_count_of_all_tasks(db)
+
+@router.put("/{task_id}")
+def update_task(
+    task_id: int,
+    task: TaskUpdateSchema,
+    db=Depends(get_db),
+    user=Depends(get_current_user),
+):
+    return task_controller.update_task(db, task_id, task, user)
+
+@router.delete("/{task_id}")
+def delete_task(
+    task_id: int,
+    db=Depends(get_db),
+    user=Depends(get_current_user),
+):
+    return task_controller.delete_task(db, task_id, user)

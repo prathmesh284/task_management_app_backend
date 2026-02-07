@@ -35,3 +35,10 @@ def get_upcoming_tasks(db, days, current_user):
 
 def get_count_of_all_tasks(db):
     return task_service.get_count(db)
+
+def update_task(db, task_id, task, user):
+    return task_service.update_task(db, task_id, task, user)
+
+def delete_task(db, task_id, user):
+    task_service.delete_task(db, task_id, user)
+    return {"message": "Task deleted"}

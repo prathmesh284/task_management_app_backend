@@ -62,3 +62,25 @@ def get_count(db):
     cur = db.cursor()
     cur.execute(q.COUNT_ALL_TASKS)
     return cur.fetchall()
+
+def update_task(db, task_id, task):
+    cur = db.cursor()
+    cur.execute(
+        q.UPDATE_TASK,
+        (
+            task.title,
+            task.description,
+            task.assigned_to,
+            task.due_date,
+            task_id,
+        ),
+    )
+    updated = cur.fetchone()
+    db.commit()
+    return updated
+
+
+def delete_task(db, task_id):
+    cur = db.cursor()
+    cur.execute(q.DELETE_TASK, (task_id,))
+    db.commit()
