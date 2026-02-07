@@ -26,6 +26,14 @@ ORDER BY
   name;
 """
 
+GET_USERS_BY_ROLE = """
+SELECT id, name, email, role
+FROM users
+# WHERE role = %s
+WHERE role = %s
+ORDER BY name ASC,id ASC;
+"""
+
 GET_EMPLOYEE_COUNT = """
 SELECT COUNT(*) AS total_employees
 FROM users

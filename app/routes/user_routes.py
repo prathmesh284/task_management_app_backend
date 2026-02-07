@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from typing import List
 
 from app.database import get_db
@@ -15,3 +15,7 @@ def get_users(db=Depends(get_db), user=Depends(get_current_user)):
 @router.get("/stats")
 def get_user_stats(db=Depends(get_db), user=Depends(get_current_user)):
     return user_controller.get_employee_count(db, user)
+
+@router.get("/")
+def list_users(role: str | None = Query(None, regex="^(admin|employee)$"), db=Depends(get_db), user=Depends(get_current_user)):
+    return user_controller.get_users(db, role, user)

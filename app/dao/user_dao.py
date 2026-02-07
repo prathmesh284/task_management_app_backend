@@ -29,3 +29,8 @@ def get_employee_count(db):
     cur = db.cursor()
     cur.execute(q.GET_EMPLOYEE_COUNT)
     return cur.fetchone()
+
+def get_users_by_role(db, role):
+    cur = db.cursor()
+    cur.execute(q.GET_USERS_BY_ROLE, (role, role))
+    return cur.fetchall()
