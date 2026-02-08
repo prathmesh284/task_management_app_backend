@@ -1,9 +1,45 @@
+# -----------------------------
+# Web Framework & Server
+# -----------------------------
 fastapi
+# FastAPI is used to build high-performance REST APIs
+
 uvicorn
+# ASGI server used to run the FastAPI application
+
+
+# -----------------------------
+# Database
+# -----------------------------
 psycopg
+# PostgreSQL database driver (psycopg v3)
+
+
+# -----------------------------
+# Authentication & Security
+# -----------------------------
 python-jose
+# Used for creating and verifying JWT access tokens
+
 passlib[bcrypt]
-python-dotenv
-pydantic
-email-validator
+# Provides password hashing utilities using bcrypt
+
 bcrypt
+# Low-level bcrypt implementation for secure password hashing
+
+
+# -----------------------------
+# Configuration Management
+# -----------------------------
+python-dotenv
+# Loads environment variables from .env file
+
+
+# -----------------------------
+# Data Validation
+# -----------------------------
+pydantic
+# Used for request/response validation and data parsing
+
+email-validator
+# Validates email fields used with Pydantic's EmailStr
