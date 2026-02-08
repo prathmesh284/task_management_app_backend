@@ -1,46 +1,82 @@
+"""
+Task Schema Definitions
+-----------------------
+This module defines Pydantic models for validating
+task-related request and response data.
+"""
+
 from pydantic import BaseModel, Field, validator
 from datetime import date, datetime
 from typing import Optional, Literal
 import re
 
-# -------- Regex for validate Title --------
+
+# -----------------------------
+# Title Validation Regex
+# -----------------------------
+# Allows alphabets, spaces, and commas only (minimum length: 3)
 TITLE_REGEX = re.compile(r"^[A-Za-z, ]{3,}$")
 
-# -------- Requests --------
+
+# -----------------------------
+# Request Schemas
+# -----------------------------
 
 class TaskCreateSchema(BaseModel):
+    """
+    Schema for creating a new task.
+    """
     title: str = Field(..., min_length=3)
-    description: str | None = None
+    description: Optional[str] = None
     assigned_to: int
     due_date: date
 
-    # validating title, it must not contain any special character
     @validator("title")
     def validate_title(cls, v):
+        """
+        Validates task title.
+
+        Rules:
+            - Must contain only alphabets, spaces, or commas
+            - Must be at least 3 characters long
+        """
         if not TITLE_REGEX.match(v):
             raise ValueError(
-                "Title must not contain any Special Character (min 5 chars)"
+                "Title must not contain any special characters (min 3 chars)"
             )
         return v
 
-    # validating due date, due date must be greater then current date
     @validator("due_date")
     def validate_due_date(cls, v):
+        """
+        Validates task due date.
+
+        Rule:
+            - Due date must be later than the current date
+        """
         if v <= date.today():
             raise ValueError("Due date must be after today")
         return v
 
 
-
 class TaskUpdateSchema(BaseModel):
+    """
+    Schema for updating task details.
+    """
     title: str
     description: Optional[str] = None
     assigned_to: int
     due_date: date
 
-# -------- Responses --------
+
+# -----------------------------
+# Response Schemas
+# -----------------------------
 
 class TaskResponseSchema(BaseModel):
+    """
+    Schema for task response data.
+    """
     id: int
     title: str
     description: Optional[str] = None
@@ -49,5 +85,9 @@ class TaskResponseSchema(BaseModel):
     assigned_to: int
     created_at: datetime
 
+
 class TaskStatusUpdateSchema(BaseModel):
+    """
+    Schema for updating task status.
+    """
     status: Literal["In Progress", "Completed"]
