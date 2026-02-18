@@ -7,6 +7,7 @@ It configures CORS settings and registers all API route modules.
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 
 # Importing route modules
 from app.routes import auth_routes, task_routes, user_routes, comment_routes
@@ -63,3 +64,5 @@ def root():
         dict: Status message indicating backend is running.
     """
     return {"status": "Backend running"}
+
+handler = Mangum(app)

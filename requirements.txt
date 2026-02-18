@@ -43,3 +43,6 @@ pydantic
 
 email-validator
 # Validates email fields used with Pydantic's EmailStr
+
+mangum
+# FastAPI does not directly run in Lambda. We wrap it using Mangum
