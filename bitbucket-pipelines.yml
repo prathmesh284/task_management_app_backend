@@ -55,9 +55,9 @@ pipelines:
     lambda-deployment:
       - variables:
           - name: S3_BUCKET_NAME
-            default: task-management-lambda-artifacts
+            default: task-management-app-s3-123456789
           - name: LAMBDA_FUNCTION_NAME
-            default: task-management-backend
+            default: task-management-app
 
       - step:
           name: Build & Deploy FastAPI Lambda
