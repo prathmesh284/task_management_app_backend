@@ -13,6 +13,7 @@ pipelines:
           caches:
             - pip
           script:
+            - set -e
             - yum install -y zip
             - python -m pip install --upgrade pip setuptools wheel
 
@@ -39,7 +40,8 @@ pipelines:
             - aws s3 cp lambda-${BITBUCKET_BUILD_NUMBER}.zip s3://${S3_BUCKET_NAME}/builds/
 
             # Update Lambda
-            - aws lambda update-function-code \
+            - |
+              aws lambda update-function-code \
                 --function-name ${LAMBDA_FUNCTION_NAME} \
                 --s3-bucket ${S3_BUCKET_NAME} \
                 --s3-key builds/lambda-${BITBUCKET_BUILD_NUMBER}.zip
