@@ -1,13 +1,64 @@
-image: public.ecr.aws/lambda/python:3.14
+# image: public.ecr.aws/lambda/python:3.14
+
+# pipelines:
+#   custom:
+#     lambda-deployment:
+#       - variables:
+#           - name: S3_BUCKET_NAME
+#             default: "task-management-app-s3-123456789"
+#           - name: LAMBDA_FUNCTION_NAME
+#             default: "task-management-app"
+#       - step:
+#           name: Build & Deploy FastAPI Lambda
+#           caches:
+#             - pip
+#           script:
+#             - set -e
+#             - yum install -y zip
+#             - python -m pip install --upgrade pip setuptools wheel
+
+#             # Clean build directory
+#             - rm -rf build
+#             - mkdir build
+
+#             # Install dependencies inside build (Linux-compatible)
+#             - pip install --only-binary=:all: -r requirements.txt -t build
+
+#             # Copy application files
+#             - cp main.py build/
+#             - cp -r app build/
+
+#             # Zip package
+#             - cd build
+#             - zip -r ../lambda-${BITBUCKET_BUILD_NUMBER}.zip .
+#             - cd ..
+
+#             # Install AWS CLI
+#             - pip install awscli
+
+#             # Upload to S3
+#             - aws s3 cp lambda-${BITBUCKET_BUILD_NUMBER}.zip s3://${S3_BUCKET_NAME}/builds/
+
+#             # Update Lambda
+#             - |
+#               aws lambda update-function-code \
+#                 --function-name ${LAMBDA_FUNCTION_NAME} \
+#                 --s3-bucket ${S3_BUCKET_NAME} \
+#                 --s3-key builds/lambda-${BITBUCKET_BUILD_NUMBER}.zip
+
+
+
+image: public.ecr.aws/lambda/python:3.10
 
 pipelines:
   custom:
     lambda-deployment:
       - variables:
           - name: S3_BUCKET_NAME
-            default: "task-management-app-s3-123456789"
+            default: task-management-lambda-artifacts
           - name: LAMBDA_FUNCTION_NAME
-            default: "task-management-app"
+            default: task-management-backend
+
       - step:
           name: Build & Deploy FastAPI Lambda
           caches:
@@ -16,32 +67,14 @@ pipelines:
             - set -e
             - yum install -y zip
             - python -m pip install --upgrade pip setuptools wheel
-
-            # Clean build directory
             - rm -rf build
             - mkdir build
-
-            # Install dependencies inside build (Linux-compatible)
             - pip install --only-binary=:all: -r requirements.txt -t build
-
-            # Copy application files
             - cp main.py build/
             - cp -r app build/
-
-            # Zip package
             - cd build
             - zip -r ../lambda-${BITBUCKET_BUILD_NUMBER}.zip .
             - cd ..
-
-            # Install AWS CLI
             - pip install awscli
-
-            # Upload to S3
             - aws s3 cp lambda-${BITBUCKET_BUILD_NUMBER}.zip s3://${S3_BUCKET_NAME}/builds/
-
-            # Update Lambda
-            - |
-              aws lambda update-function-code \
-                --function-name ${LAMBDA_FUNCTION_NAME} \
-                --s3-bucket ${S3_BUCKET_NAME} \
-                --s3-key builds/lambda-${BITBUCKET_BUILD_NUMBER}.zip
+            - aws lambda update-function-code --function-name ${LAMBDA_FUNCTION_NAME} --s3-bucket ${S3_BUCKET_NAME} --s3-key builds/lambda-${BITBUCKET_BUILD_NUMBER}.zip
