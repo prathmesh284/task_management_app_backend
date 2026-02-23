@@ -47,6 +47,42 @@
 #                 --s3-key builds/lambda-${BITBUCKET_BUILD_NUMBER}.zip
 
 
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# image: public.ecr.aws/lambda/python:3.11
+
+# pipelines:
+#   custom:
+#     lambda-deployment:
+#       - variables:
+#           - name: S3_BUCKET_NAME
+#             default: task-management-app-s3-123456789
+#           - name: LAMBDA_FUNCTION_NAME
+#             default: task-management-app
+
+#       - step:
+#           name: Build & Deploy FastAPI Lambda
+#           script:
+#             - set -e
+#             - yum install -y zip
+#             - python -m pip install --upgrade pip setuptools wheel
+#             - rm -rf build
+#             - mkdir build
+#             - |
+#               pip install --no-cache-dir -r requirements.txt -t build
+#             - cp main.py build/
+#             - cp -r app build/
+#             - cd build
+#             - zip -r ../lambda-${BITBUCKET_BUILD_NUMBER}.zip .
+#             - cd ..
+#             - pip install awscli
+#             - aws s3 cp lambda-${BITBUCKET_BUILD_NUMBER}.zip s3://${S3_BUCKET_NAME}/builds/
+#             - aws lambda update-function-code --function-name ${LAMBDA_FUNCTION_NAME} --s3-bucket ${S3_BUCKET_NAME} --s3-key builds/lambda-${BITBUCKET_BUILD_NUMBER}.zip
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 image: public.ecr.aws/lambda/python:3.11
 
@@ -55,9 +91,7 @@ pipelines:
     lambda-deployment:
       - variables:
           - name: S3_BUCKET_NAME
-            default: task-management-app-s3-123456789
           - name: LAMBDA_FUNCTION_NAME
-            default: task-management-app
 
       - step:
           name: Build & Deploy FastAPI Lambda
