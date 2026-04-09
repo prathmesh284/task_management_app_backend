@@ -2,7 +2,7 @@ image: public.ecr.aws/lambda/python:3.11
 
 pipelines:
   branches:
-    main:   # runs after PR merge into main
+    master:   # runs after PR merge into main
       - step:
           name: Build & Deploy FastAPI Lambda (Direct Upload)
           script:
